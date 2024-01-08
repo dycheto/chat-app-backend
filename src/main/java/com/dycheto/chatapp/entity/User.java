@@ -1,7 +1,10 @@
 package com.dycheto.chatapp.entity;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
@@ -9,13 +12,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<ChatRoom> chatRooms;
 
     public User(){}
 
@@ -24,11 +30,11 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,6 +52,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addChatRoom(ChatRoom chatRoom){
+        if(this.chatRooms == null){
+            this.chatRooms = new HashSet<>();
+        }
+        this.chatRooms.add(chatRoom);
     }
 
     @Override
