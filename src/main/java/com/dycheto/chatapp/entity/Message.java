@@ -31,6 +31,8 @@ public class Message {
     @Column(nullable = false)
     private Date createdAt = new Date();
 
+    public Message(){}
+
     public Message(User sender, User receiver, ChatRoom chatRoom, String content) {
         this.sender = sender;
         this.receiver = receiver;

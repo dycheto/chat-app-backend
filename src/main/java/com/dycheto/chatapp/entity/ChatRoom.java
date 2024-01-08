@@ -26,6 +26,8 @@ public class ChatRoom {
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
 
+    public ChatRoom(){}
+
     public ChatRoom(String name, Date createdAt) {
         this.name = name;
         this.createdAt = createdAt;
