@@ -3,9 +3,10 @@ This repository contains the backend code for a real-time chat application built
 
 ## Features
 
-- Real-time messaging
+- Real-time messaging with WebSocket
 - User authentication
 - RESTful API for user and message management
+- WebSocket endpoints for real-time communication
 
 ## Getting Started
 
