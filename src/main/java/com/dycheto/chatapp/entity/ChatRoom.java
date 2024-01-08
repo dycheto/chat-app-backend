@@ -21,6 +21,9 @@ public class ChatRoom {
     @Column(nullable = false)
     private Date createdAt = new Date();
 
+    @ManyToMany
+    @JoinTable(name = "user_chat_rooms", joinColumns = @JoinColumn(name = "chat_room_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
 
     public ChatRoom(String name, Date createdAt) {
