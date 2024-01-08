@@ -23,11 +23,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> getUserById(Long id) {
+    public User findUserById(Long id) {
 
         Optional<User> user = userRepository.findById(id);
 
-        return user;
+        return user.get();
 
     }
 

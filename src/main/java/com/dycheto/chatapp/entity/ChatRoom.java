@@ -21,17 +21,15 @@ public class ChatRoom {
     @Column(nullable = false)
     private Date createdAt = new Date();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_chat_rooms", joinColumns = @JoinColumn(name = "chat_room_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public ChatRoom(){}
 
-    public ChatRoom(String name, Date createdAt) {
+    public ChatRoom(String name) {
         this.name = name;
-        this.createdAt = createdAt;
-
     }
 
     public Long getId() {
@@ -68,10 +66,6 @@ public class ChatRoom {
 
     public void addUser(User user){
 
-        if(this.users == null){
-            this.users = new HashSet<>();
-        }
-
         this.users.add(user);
     }
 
@@ -81,7 +75,6 @@ public class ChatRoom {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createdAt=" + createdAt +
-                ", users=" + users +
                 '}';
     }
 }

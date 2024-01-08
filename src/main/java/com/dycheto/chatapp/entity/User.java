@@ -20,8 +20,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<ChatRoom> chatRooms;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private Set<ChatRoom> chatRooms = new HashSet<>();;
 
     public User(){}
 
@@ -55,9 +55,6 @@ public class User {
     }
 
     public void addChatRoom(ChatRoom chatRoom){
-        if(this.chatRooms == null){
-            this.chatRooms = new HashSet<>();
-        }
         this.chatRooms.add(chatRoom);
     }
 
