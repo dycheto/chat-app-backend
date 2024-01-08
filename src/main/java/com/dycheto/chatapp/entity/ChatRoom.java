@@ -2,9 +2,7 @@ package com.dycheto.chatapp.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "chat_rooms")
@@ -25,6 +23,15 @@ public class ChatRoom {
     @JoinTable(name = "user_chat_rooms", joinColumns = @JoinColumn(name = "chat_room_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messages = new ArrayList<>();
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
+    @Column(name = "is_private", nullable = false)
+    private boolean isPrivate = false;
 
     public ChatRoom(){}
 
@@ -69,12 +76,42 @@ public class ChatRoom {
         this.users.add(user);
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public void addMessage(Message message){
+        this.messages.add(message);
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
     @Override
     public String toString() {
         return "ChatRoom{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createdAt=" + createdAt +
+                ", isActive=" + isActive +
+                ", isPrivate=" + isPrivate +
                 '}';
     }
 }

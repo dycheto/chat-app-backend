@@ -1,8 +1,10 @@
 package com.dycheto.chatapp;
 
 import com.dycheto.chatapp.entity.ChatRoom;
+import com.dycheto.chatapp.entity.Message;
 import com.dycheto.chatapp.entity.User;
 import com.dycheto.chatapp.service.ChatRoomService;
+import com.dycheto.chatapp.service.MessageService;
 import com.dycheto.chatapp.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +22,7 @@ public class ChatAppApplication {
 
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserService userService, ChatRoomService chatRoomService) {
+    public CommandLineRunner commandLineRunner(UserService userService, ChatRoomService chatRoomService, MessageService messageService) {
         return runner -> {
 
 //			saveUser(userService);
@@ -28,10 +30,34 @@ public class ChatAppApplication {
 //			deleteUserById(userService);
 //			saveChatRoom(chatRoomService);
 //            getChatRoom(chatRoomService);
-//            deleteChatRoomById(chatRoomService);
+            deleteChatRoomById(chatRoomService);
+//            saveMessageWithSenderAndReceiver(messageService, userService, chatRoomService);
+//            deleteMessageById(messageService);
 
         };
     }
+
+    private void deleteMessageById(MessageService messageService) throws Exception{
+        long id = 1;
+        messageService.deleteMessageById(id);
+    }
+
+    private void saveMessageWithSenderAndReceiver(MessageService messageService, UserService userService, ChatRoomService chatRoomService){
+        User senderPesho = new User("Pesho", "test123");
+        User receiverGosho = new User("Gosho", "test123");
+        ChatRoom diabloFansChatRoom = new ChatRoom("Diablo fans");
+        diabloFansChatRoom.addUser(senderPesho);
+        diabloFansChatRoom.addUser(receiverGosho);
+
+        userService.save(senderPesho);
+        userService.save(receiverGosho);
+        chatRoomService.save(diabloFansChatRoom);
+
+
+        Message message = new Message(senderPesho, receiverGosho, diabloFansChatRoom, "Kvo stava brat?");
+        messageService.save(message);
+    }
+
 
     private void deleteChatRoomById(ChatRoomService chatRoomService) throws Exception{
         long id = 1;
