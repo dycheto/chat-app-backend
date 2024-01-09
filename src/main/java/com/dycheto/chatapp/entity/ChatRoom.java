@@ -19,7 +19,7 @@ public class ChatRoom {
     @Column(nullable = false)
     private Date createdAt = new Date();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_chat_rooms", joinColumns = @JoinColumn(name = "chat_room_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();

@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -30,21 +31,61 @@ public class ChatAppApplication {
 //			deleteUserById(userService);
 //			saveChatRoom(chatRoomService);
 //            getChatRoom(chatRoomService);
-            deleteChatRoomById(chatRoomService);
+//            deleteChatRoomById(chatRoomService);
 //            saveMessageWithSenderAndReceiver(messageService, userService, chatRoomService);
 //            deleteMessageById(messageService);
-
+//            createMoreMessagesToExistingRoom(messageService, userService, chatRoomService);
+//            getAllMessagesByChatRoomId(messageService);
+            getChatRoomWithUsers(chatRoomService);
         };
     }
 
-    private void deleteMessageById(MessageService messageService) throws Exception{
+    private void getAllMessagesByChatRoomId(MessageService messageService) {
+        long id = 2;
+        List<Message> messages = messageService.findAllMessagesByChatRoomId(id);
+
+        for(Message m : messages){
+            System.out.println(m.getContent());
+        }
+    }
+
+    private void getChatRoomWithUsers(ChatRoomService chatRoomService){
+        long id = 2;
+        ChatRoom chatRoom = chatRoomService.getChatRoomAndUsers(id);
+
+        for(User u : chatRoom.getUsers()){
+            System.out.println(u.getUsername());
+        }
+    }
+
+
+    private void createMoreMessagesToExistingRoom(MessageService messageService, UserService userService, ChatRoomService chatRoomService) {
+        User senderPesho = new User("New", "test123");
+        User receiverGosho = new User("Demo", "test123");
+        long id = 2;
+
+        ChatRoom diabloFansChatRoom = chatRoomService.findChatRoomById(id);
+
+        diabloFansChatRoom.addUser(senderPesho);
+        diabloFansChatRoom.addUser(receiverGosho);
+
+        userService.save(senderPesho);
+        userService.save(receiverGosho);
+        chatRoomService.save(diabloFansChatRoom);
+
+
+        Message message = new Message(receiverGosho, senderPesho, diabloFansChatRoom, "Kvo stava brat?");
+        messageService.save(message);
+    }
+
+    private void deleteMessageById(MessageService messageService) throws Exception {
         long id = 1;
         messageService.deleteMessageById(id);
     }
 
-    private void saveMessageWithSenderAndReceiver(MessageService messageService, UserService userService, ChatRoomService chatRoomService){
-        User senderPesho = new User("Pesho", "test123");
-        User receiverGosho = new User("Gosho", "test123");
+    private void saveMessageWithSenderAndReceiver(MessageService messageService, UserService userService, ChatRoomService chatRoomService) {
+        User senderPesho = new User("Asparuh", "test123");
+        User receiverGosho = new User("Gruh", "test123");
         ChatRoom diabloFansChatRoom = new ChatRoom("Diablo fans");
         diabloFansChatRoom.addUser(senderPesho);
         diabloFansChatRoom.addUser(receiverGosho);
@@ -59,11 +100,12 @@ public class ChatAppApplication {
     }
 
 
-    private void deleteChatRoomById(ChatRoomService chatRoomService) throws Exception{
+    private void deleteChatRoomById(ChatRoomService chatRoomService) throws Exception {
         long id = 1;
 
         chatRoomService.deleteChatRoomById(id);
     }
+
     private void getChatRoom(ChatRoomService chatRoomService) {
 
         long id = 1;
