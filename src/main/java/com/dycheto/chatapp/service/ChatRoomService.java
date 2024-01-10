@@ -4,6 +4,7 @@ import com.dycheto.chatapp.entity.ChatRoom;
 import com.dycheto.chatapp.repository.ChatRoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,13 @@ public class ChatRoomService {
 
     @Transactional
     public void save(ChatRoom chatRoom){
+
         chatRoomRepository.save(chatRoom);
+    }
+
+    public ChatRoom getChatRoomByName(String name){
+        Optional<ChatRoom> chatRoom = chatRoomRepository.getChatRoomByName(name);
+        return chatRoom.get();
     }
 
     public List<ChatRoom> findAll(){

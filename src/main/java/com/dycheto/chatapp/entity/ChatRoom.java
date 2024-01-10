@@ -15,6 +15,9 @@ public class ChatRoom {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(name = "owner_id", nullable = false, unique = true)
+    private Long ownerId;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date createdAt = new Date();
@@ -35,8 +38,9 @@ public class ChatRoom {
 
     public ChatRoom(){}
 
-    public ChatRoom(String name) {
+    public ChatRoom(String name, Long ownerId) {
         this.name = name;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -102,6 +106,14 @@ public class ChatRoom {
 
     public void setPrivate(boolean aPrivate) {
         isPrivate = aPrivate;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ChatAppApplication {
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, ChatRoomService chatRoomService, MessageService messageService) {
         return runner -> {
-            sendMessageToChatRoom(userService, chatRoomService, messageService);
+//            sendMessageToChatRoom(userService, chatRoomService, messageService);
         };
     }
 
