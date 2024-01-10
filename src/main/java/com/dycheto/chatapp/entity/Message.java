@@ -40,6 +40,13 @@ public class Message {
         this.content = content;
     }
 
+    public Message(User sender, ChatRoom chatRoom, String content) {
+        this.sender = sender;
+        this.chatRoom = chatRoom;
+        this.content = content;
+        this.receiver = null; 
+    }
+
     public Long getId() {
         return id;
     }

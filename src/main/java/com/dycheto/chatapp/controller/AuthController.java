@@ -67,7 +67,11 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+
+        User user = userService.findByUsername(userDetails.getUsername()).get();
+        Long userId = user.getId();
+
+        return ResponseEntity.ok(new AuthenticationResponse(user.getUsername(), userId ,jwt));
     }
 
 }

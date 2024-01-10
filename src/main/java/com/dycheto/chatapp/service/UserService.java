@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,19 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    public Optional<User> findByUsername(String username)throws Exception{
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isPresent()) {
+           return userOptional;
+        } else {
+            throw new IllegalAccessException("There is no such user with the given Id");
+        }
+
+    }
+
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }

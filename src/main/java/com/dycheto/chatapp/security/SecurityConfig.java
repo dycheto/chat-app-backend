@@ -34,7 +34,8 @@ public class SecurityConfig{
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll() // Permit these endpoints
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()// Permit these endpoints
+                        .requestMatchers("/ws/**").authenticated() // Secure WebSocket endpoints
                         .anyRequest().authenticated() // All other requests need authentication
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
