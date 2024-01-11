@@ -27,7 +27,7 @@ public class ChatRoomService {
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.getChatRoomByName(chatRoom.getName());
 
         if (chatRoomOptional.isPresent()) {
-            throw new IllegalArgumentException("There is existing chat room with the given name: " + chatRoom.getName());
+            throw new IllegalArgumentException();
         }
 
         chatRoomRepository.save(chatRoom);

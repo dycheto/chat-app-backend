@@ -48,7 +48,7 @@ public class ChatRoomController {
         try{
             chatRoomService.save(chatRoom);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("message", "Error: A chat room with this name already exists." + chatRoomName));
         }
 
 
