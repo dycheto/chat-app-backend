@@ -1,6 +1,7 @@
 package com.dycheto.chatapp.service;
 
 import com.dycheto.chatapp.entity.ChatRoom;
+import com.dycheto.chatapp.exeption.ChatRoomAlreadyExistsException;
 import com.dycheto.chatapp.repository.ChatRoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void save(ChatRoom chatRoom)throws Exception{
+    public void save(ChatRoom chatRoom)throws ChatRoomAlreadyExistsException{
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.getChatRoomByName(chatRoom.getName());
 
         if (chatRoomOptional.isPresent()) {
-            throw new IllegalArgumentException();
+            throw new ChatRoomAlreadyExistsException("A chat room with this name already exists.");
         }
 
         chatRoomRepository.save(chatRoom);

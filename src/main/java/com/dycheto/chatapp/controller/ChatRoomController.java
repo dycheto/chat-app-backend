@@ -4,10 +4,12 @@ import com.dycheto.chatapp.dto.ChatRoomRequest;
 import com.dycheto.chatapp.dto.ChatRoomResponse;
 import com.dycheto.chatapp.entity.ChatRoom;
 import com.dycheto.chatapp.entity.User;
+import com.dycheto.chatapp.exeption.ChatRoomAlreadyExistsException;
 import com.dycheto.chatapp.service.ChatRoomService;
 import com.dycheto.chatapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +49,8 @@ public class ChatRoomController {
 
         try{
             chatRoomService.save(chatRoom);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(Map.of("message", "Error: A chat room with this name already exists." + chatRoomName));
+        }catch (ChatRoomAlreadyExistsException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
         }
 
 
