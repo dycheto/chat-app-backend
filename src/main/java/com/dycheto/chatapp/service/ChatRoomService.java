@@ -23,7 +23,12 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void save(ChatRoom chatRoom){
+    public void save(ChatRoom chatRoom)throws Exception{
+        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.getChatRoomByName(chatRoom.getName());
+
+        if (chatRoomOptional.isPresent()) {
+            throw new IllegalArgumentException("There is existing chat room with the given name: " + chatRoom.getName());
+        }
 
         chatRoomRepository.save(chatRoom);
     }

@@ -6,12 +6,11 @@ import com.dycheto.chatapp.entity.ChatRoom;
 import com.dycheto.chatapp.entity.User;
 import com.dycheto.chatapp.service.ChatRoomService;
 import com.dycheto.chatapp.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -22,13 +21,15 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ChatRoomController.class);
+
     public ChatRoomController(ChatRoomService chatRoomService, UserService userService) {
         this.chatRoomService = chatRoomService;
         this.userService = userService;
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<?> createChatRoomForUser(@RequestBody ChatRoomRequest chatRoomRequest) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createChatRoomForUser(@RequestBody ChatRoomRequest chatRoomRequest){
 
         if (chatRoomRequest.getName() == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "Error: ChatRoom must have a valid name."));
@@ -40,11 +41,17 @@ public class ChatRoomController {
 
         String chatRoomName = chatRoomRequest.getName();
         Long chatRoomOwnerId = chatRoomRequest.getUserId();
-
         User user = userService.findUserById(chatRoomOwnerId);
         ChatRoom chatRoom = new ChatRoom(chatRoomName, chatRoomOwnerId);
         chatRoom.addUser(user);
-        chatRoomService.save(chatRoom);
+
+        try{
+            chatRoomService.save(chatRoom);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
         ChatRoom dbRoom = chatRoomService.getChatRoomByName(chatRoomName);
         ChatRoomResponse response = new ChatRoomResponse(
                 dbRoom.getId(),
