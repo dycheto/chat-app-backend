@@ -54,6 +54,14 @@ public class User {
         this.password = password;
     }
 
+    public Set<ChatRoom> getChatRooms() {
+        return chatRooms;
+    }
+
+    public void setChatRooms(Set<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
+    }
+
     public void addChatRoom(ChatRoom chatRoom){
         this.chatRooms.add(chatRoom);
     }

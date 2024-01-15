@@ -29,21 +29,28 @@ public class UserService {
     }
 
     public Optional<User> findByUsername(String username)throws Exception{
-
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isPresent()) {
            return userOptional;
         } else {
-            throw new IllegalAccessException("There is no such user with the given Id");
+            throw new IllegalAccessException("There is no such user with the given username");
         }
+    }
 
+    public Optional<User> findByUsernameWithChatrooms(String username) throws Exception{
+        Optional<User> userOptional = userRepository.findByUsernameWithChatrooms(username);
+
+        if (userOptional.isPresent()) {
+            return userOptional;
+        } else {
+            throw new IllegalAccessException("There is no such user with the given username");
+        }
     }
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
-
 
     public User findUserById(Long id) {
 
@@ -64,4 +71,6 @@ public class UserService {
            throw new IllegalAccessException("There is no such user with the given Id");
         }
     }
+
+
 }

@@ -4,6 +4,9 @@ public class ChatRoomRequest {
     private String name;
     private Long userId;
 
+    public ChatRoomRequest(Long userId ){
+        this.userId = userId;
+    }
     public ChatRoomRequest(String name,Long userId ){
         this.name = name;
         this.userId = userId;

@@ -3,6 +3,8 @@ package com.dycheto.chatapp.controller;
 
 import com.dycheto.chatapp.dto.AuthenticationRequest;
 import com.dycheto.chatapp.dto.AuthenticationResponse;
+import com.dycheto.chatapp.dto.ChatRoomDTO;
+import com.dycheto.chatapp.entity.ChatRoom;
 import com.dycheto.chatapp.entity.User;
 import com.dycheto.chatapp.service.UserService;
 import com.dycheto.chatapp.security.JwtUtil;
@@ -68,10 +70,27 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        User user = userService.findByUsername(userDetails.getUsername()).get();
+        User user = userService.findByUsernameWithChatrooms(userDetails.getUsername()).get();
         Long userId = user.getId();
 
-        return ResponseEntity.ok(new AuthenticationResponse(user.getUsername(), userId ,jwt));
+
+        AuthenticationResponse response = new AuthenticationResponse(user.getUsername(), userId ,jwt);
+
+        for(ChatRoom chatRoom : user.getChatRooms()) {
+            ChatRoomDTO chatRoomDTO = convertToDTO(chatRoom);
+            response.addChatRoom(chatRoomDTO);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    private ChatRoomDTO convertToDTO(ChatRoom chatRoom) {
+        // Create a new ChatRoomDTO and set the necessary fields
+        ChatRoomDTO dto = new ChatRoomDTO();
+        dto.setId(chatRoom.getId());
+        dto.setName(chatRoom.getName());
+        // set other fields as needed
+        return dto;
     }
 
 }

@@ -15,7 +15,7 @@ public class ChatRoom {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "owner_id", nullable = false, unique = true)
+    @Column(name = "owner_id", nullable = false, unique = false)
     private Long ownerId;
 
     @Temporal(TemporalType.TIMESTAMP)
