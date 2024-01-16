@@ -40,6 +40,7 @@ public class UserController {
         UserResponse response = new UserResponse(user.getId(), user.getUsername());
 
         for(ChatRoom chatRoom : user.getChatRooms()) {
+            System.out.println("chat room: " + chatRoom);
             ChatRoomDTO chatRoomDTO = convertToDTO(chatRoom);
             response.addChatRoom(chatRoomDTO);
         }
